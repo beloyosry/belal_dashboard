@@ -521,12 +521,11 @@ export default function Dashboard() {
                                                 skill.icon in icons
                                             ) {
                                                 // Use proper typing to fix the TypeScript error
-                                                const IconComponent =
-                                                    icons[
-                                                        skill.icon as keyof typeof icons
-                                                    ] as FC<{
-                                                        className?: string;
-                                                    }>;
+                                                const IconComponent = icons[
+                                                    skill.icon as keyof typeof icons
+                                                ] as FC<{
+                                                    className?: string;
+                                                }>;
                                                 return (
                                                     <IconComponent className="w-6 h-6 text-white" />
                                                 );
@@ -611,12 +610,11 @@ export default function Dashboard() {
                                                     )
                                                     .slice(0, 18) // Limit to first 18 matches
                                                     .map((iconName) => {
-                                                        const IconComp =
-                                                            icons[
-                                                                iconName as keyof typeof icons
-                                                            ] as FC<{
-                                                                className?: string;
-                                                            }>;
+                                                        const IconComp = icons[
+                                                            iconName as keyof typeof icons
+                                                        ] as FC<{
+                                                            className?: string;
+                                                        }>;
                                                         return (
                                                             <div
                                                                 key={iconName}
@@ -753,10 +751,10 @@ export default function Dashboard() {
             <div className="my-10">
                 <div className="sm:flex sm:items-center">
                     <div className="sm:flex-auto">
-                        <h1 className="text-2xl font-semibold text-white sm:text-3xl md:text-4xl">
+                        <h1 className="text-2xl font-semibold text-white sm:text-3xl">
                             Projects
                         </h1>
-                        <p className="mt-2 text-sm text-gray-300 sm:text-base md:text-lg">
+                        <p className="mt-2 text-sm text-gray-300 sm:text-base">
                             Manage your portfolio projects and featured websites
                         </p>
                     </div>
@@ -783,26 +781,26 @@ export default function Dashboard() {
                                     <table className="min-w-full divide-y divide-gray-700">
                                         <thead className="bg-gray-800">
                                             <tr>
-                                                <th className="w-10 px-3 py-3.5 sm:w-12 md:w-14"></th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="w-10 px-3 py-3.5 sm:w-12 "></th>
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Project
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Technologies
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Type
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Category
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Status
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Year
                                                 </th>
-                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base md:text-lg">
+                                                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100 sm:text-base">
                                                     Links
                                                 </th>
                                                 <th className="relative py-3.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-8">
@@ -852,16 +850,16 @@ export default function Dashboard() {
                                                                         className={`hover:bg-gray-700`}
                                                                     >
                                                                         <td
-                                                                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-400 sm:px-4 md:px-5"
+                                                                            className="whitespace-nowrap px-3 py-4 text-sm text-gray-400 sm:px-4"
                                                                             {...provided.dragHandleProps}
                                                                         >
-                                                                            <icons.GripVertical className="h-5 w-5 cursor-grab sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                            <icons.GripVertical className="h-5 w-5 cursor-grab sm:h-6 sm:w-6 " />
                                                                         </td>
                                                                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-8">
                                                                             <div className="flex items-center">
-                                                                                <div className="h-10 w-10 flex-shrink-0 sm:h-12 sm:w-12 md:h-14 md:w-14">
+                                                                                <div className="h-10 w-10 flex-shrink-0 sm:h-12 sm:w-12 md:h-14 ">
                                                                                     <img
-                                                                                        className="h-10 w-10 rounded-full object-cover sm:h-12 sm:w-12 md:h-14 md:w-14"
+                                                                                        className="h-10 w-10 rounded-full object-cover sm:h-12 sm:w-12 md:h-14 "
                                                                                         src={
                                                                                             project.image_url
                                                                                         }
@@ -882,7 +880,7 @@ export default function Dashboard() {
                                                                                 </div>
                                                                             </div>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
                                                                             <div className="flex flex-wrap gap-1">
                                                                                 {project.technologies.map(
                                                                                     (
@@ -892,7 +890,7 @@ export default function Dashboard() {
                                                                                             key={
                                                                                                 tech
                                                                                             }
-                                                                                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900 text-blue-200 sm:text-sm md:text-base"
+                                                                                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900 text-blue-200 sm:text-sm"
                                                                                         >
                                                                                             {
                                                                                                 tech
@@ -902,23 +900,23 @@ export default function Dashboard() {
                                                                                 )}
                                                                             </div>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
-                                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-900 text-purple-200 sm:text-sm md:text-base">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
+                                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-900 text-purple-200 sm:text-sm">
                                                                                 {
                                                                                     project.type
                                                                                 }
                                                                             </span>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
-                                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900 text-indigo-200 sm:text-sm md:text-base">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
+                                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900 text-indigo-200 sm:text-sm">
                                                                                 {
                                                                                     project.category
                                                                                 }
                                                                             </span>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
                                                                             <span
-                                                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium sm:text-sm md:text-base ${
+                                                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium sm:text-sm ${
                                                                                     project.status ===
                                                                                     "featured"
                                                                                         ? "bg-green-900 text-green-200"
@@ -941,12 +939,12 @@ export default function Dashboard() {
                                                                                       )}
                                                                             </span>
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
                                                                             {
                                                                                 project.year
                                                                             }
                                                                         </td>
-                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4 md:px-5">
+                                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300 sm:px-4">
                                                                             <div className="flex space-x-2">
                                                                                 <a
                                                                                     href={
@@ -957,7 +955,7 @@ export default function Dashboard() {
                                                                                     className="text-gray-400 hover:text-gray-200"
                                                                                     aria-label="View live site"
                                                                                 >
-                                                                                    <icons.ExternalLink className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.ExternalLink className="h-5 w-5  " />
                                                                                 </a>
                                                                                 {project.github_url && (
                                                                                     <a
@@ -969,7 +967,7 @@ export default function Dashboard() {
                                                                                         className="text-gray-400 hover:text-gray-200"
                                                                                         aria-label="View GitHub repository"
                                                                                     >
-                                                                                        <icons.Github className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                        <icons.Github className="h-5 w-5  " />
                                                                                     </a>
                                                                                 )}
                                                                             </div>
@@ -985,7 +983,7 @@ export default function Dashboard() {
                                                                                     className="text-indigo-400 hover:text-indigo-300"
                                                                                     aria-label="Edit project"
                                                                                 >
-                                                                                    <icons.Pencil className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.Pencil className="h-5 w-5  " />
                                                                                 </button>
                                                                                 <button
                                                                                     onClick={() =>
@@ -996,7 +994,7 @@ export default function Dashboard() {
                                                                                     className="text-red-400 hover:text-red-300"
                                                                                     aria-label="Delete project"
                                                                                 >
-                                                                                    <icons.Trash2 className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.Trash2 className="h-5 w-5  " />
                                                                                 </button>
                                                                             </div>
                                                                         </td>

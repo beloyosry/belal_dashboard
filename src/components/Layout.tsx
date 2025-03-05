@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <div className="flex-shrink-0 flex items-center">
                                 <Code2 className="h-8 w-8 text-indigo-400" />
                                 <span className="ml-2 text-xl font-bold text-white">
-                                    Portfolio Dashboard
+                                    Belal Dashboard
                                 </span>
                             </div>
                         </div>

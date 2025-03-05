@@ -37,15 +37,14 @@ export default function ProjectForm({
     });
 
     // Store technologies as a comma-separated string for the form input
-    const [technologiesInput, setTechnologiesInput] = useState(
-        project?.technologies?.join(", ") || ""
+    const [technologiesInput, setTechnologiesInput] = useState<string[]>(
+        project?.technologies?.map((tech) => tech.trim()) || []
     );
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const technologiesArray = technologiesInput
-           
             .map((tech) => tech.trim())
             .filter(Boolean);
 
@@ -164,7 +163,9 @@ export default function ProjectForm({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        type: e.target.value as "web" | "mobile",
+                                        type: e.target.value as
+                                            | "web"
+                                            | "mobile",
                                     })
                                 }
                                 className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -188,7 +189,9 @@ export default function ProjectForm({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        category: e.target.value as "frontend" | "fullstack",
+                                        category: e.target.value as
+                                            | "frontend"
+                                            | "fullstack",
                                     })
                                 }
                                 className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -214,7 +217,10 @@ export default function ProjectForm({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        status: e.target.value as "completed" | "in-progress" | "featured",
+                                        status: e.target.value as
+                                            | "completed"
+                                            | "in-progress"
+                                            | "featured",
                                     })
                                 }
                                 className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -240,7 +246,9 @@ export default function ProjectForm({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        year: parseInt(e.target.value) || new Date().getFullYear(),
+                                        year:
+                                            parseInt(e.target.value) ||
+                                            new Date().getFullYear(),
                                     })
                                 }
                                 min="2000"
@@ -326,9 +334,9 @@ export default function ProjectForm({
                         <input
                             id="technologies"
                             type="text"
-                            value={technologiesInput}
+                            value={technologiesInput.join(", ")}
                             onChange={(e) =>
-                                setTechnologiesInput(e.target.value)
+                                setTechnologiesInput(e.target.value.split(", "))
                             }
                             className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required
