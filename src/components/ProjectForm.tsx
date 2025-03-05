@@ -45,7 +45,7 @@ export default function ProjectForm({
         e.preventDefault();
 
         const technologiesArray = technologiesInput
-            .split(",")
+           
             .map((tech) => tech.trim())
             .filter(Boolean);
 

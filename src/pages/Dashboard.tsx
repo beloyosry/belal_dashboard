@@ -1,15 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, FC } from "react";
 import { toast } from "react-hot-toast";
-import {
-    Plus,
-    Pencil,
-    Trash2,
-    ExternalLink,
-    Github,
-    GripVertical,
-    Linkedin,
-    Save,
-} from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import { Project, Skill, User } from "../types";
 import ProjectForm from "../components/ProjectForm";
 import {
@@ -26,6 +17,10 @@ import {
     useInsertSkill,
     useDeleteSkill,
 } from "../api/skills";
+
+const icons = {
+    ...LucideIcons,
+};
 
 export default function Dashboard() {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -310,7 +305,7 @@ export default function Dashboard() {
                                     onClick={() => setEditingField("image_url")}
                                     aria-label="Edit profile image"
                                 >
-                                    <Pencil className="h-4 w-4 text-white" />
+                                    <icons.Pencil className="h-4 w-4 text-white" />
                                 </button>
                             </div>
                         </div>
@@ -346,7 +341,7 @@ export default function Dashboard() {
                                 onClick={() => setEditingField("email")}
                                 aria-label="Edit email address"
                             >
-                                <Pencil className="h-3 w-3 text-gray-400" />
+                                <icons.Pencil className="h-3 w-3 text-gray-400" />
                             </button>
                         </div>
 
@@ -383,7 +378,7 @@ export default function Dashboard() {
                                             }
                                         }}
                                     >
-                                        <Github className="h-6 w-6 text-gray-300 hover:text-white transition-colors" />
+                                        <icons.Github className="h-6 w-6 text-gray-300 hover:text-white transition-colors" />
                                     </a>
                                 )}
                                 <button
@@ -391,7 +386,7 @@ export default function Dashboard() {
                                     onClick={() => setEditingField("github")}
                                     aria-label="Edit GitHub link"
                                 >
-                                    <Pencil className="h-3 w-3 text-gray-400" />
+                                    <icons.Pencil className="h-3 w-3 text-gray-400" />
                                 </button>
                             </div>
 
@@ -426,7 +421,7 @@ export default function Dashboard() {
                                             }
                                         }}
                                     >
-                                        <Linkedin className="h-6 w-6 text-gray-300 hover:text-white transition-colors" />
+                                        <icons.Linkedin className="h-6 w-6 text-gray-300 hover:text-white transition-colors" />
                                     </a>
                                 )}
                                 <button
@@ -434,7 +429,7 @@ export default function Dashboard() {
                                     onClick={() => setEditingField("linkedin")}
                                     aria-label="Edit LinkedIn link"
                                 >
-                                    <Pencil className="h-3 w-3 text-gray-400" />
+                                    <icons.Pencil className="h-3 w-3 text-gray-400" />
                                 </button>
                             </div>
                         </div>
@@ -483,7 +478,7 @@ export default function Dashboard() {
                                 onClick={() => setEditingField("about")}
                                 aria-label="Edit about me section"
                             >
-                                <Pencil className="h-4 w-4 text-gray-400" />
+                                <icons.Pencil className="h-4 w-4 text-gray-400" />
                             </button>
                         </div>
 
@@ -507,11 +502,46 @@ export default function Dashboard() {
                 </h2>
                 <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {skillsForm.map((skill, index) => (
-                        <div 
-                            key={skill.id} 
-                            className="relative group bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-700 hover:border-indigo-500 transition-all duration-300"
+                        <div
+                            key={skill.id}
+                            className={`relative group rounded-lg shadow-md overflow-hidden border border-gray-700 hover:border-indigo-500 transition-all duration-300`}
+                            style={{
+                                backgroundColor: skill.color || "#1f2937",
+                            }}
                         >
                             <div className="p-5">
+                                <div className="flex items-center mb-4">
+                                    <div className="mr-3 bg-gray-700 bg-opacity-50 rounded-full p-2">
+                                        {(() => {
+                                            // Dynamically render the icon by looking it up in the imported Lucide icons
+                                            if (
+                                                skill.icon &&
+                                                typeof skill.icon ===
+                                                    "string" &&
+                                                skill.icon in icons
+                                            ) {
+                                                // Use proper typing to fix the TypeScript error
+                                                const IconComponent =
+                                                    icons[
+                                                        skill.icon as keyof typeof icons
+                                                    ] as FC<{
+                                                        className?: string;
+                                                    }>;
+                                                return (
+                                                    <IconComponent className="w-6 h-6 text-white" />
+                                                );
+                                            }
+                                            // Fallback to a default icon (Code2) if the icon name is not valid
+                                            return (
+                                                <icons.Code2 className="w-6 h-6 text-white" />
+                                            );
+                                        })()}
+                                    </div>
+                                    <h3 className="text-lg font-medium text-white">
+                                        {skill.category || "New Skill"}
+                                    </h3>
+                                </div>
+
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Category
@@ -531,6 +561,124 @@ export default function Dashboard() {
                                         aria-label="Skill category"
                                     />
                                 </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                                        Icon
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            className="block w-full px-3 py-2 rounded-md border-gray-700 bg-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm pr-10"
+                                            value={skill.icon || ""}
+                                            onChange={(e) =>
+                                                handleSkillChange(
+                                                    index,
+                                                    "icon",
+                                                    e.target.value
+                                                )
+                                            }
+                                            placeholder="Search for an icon..."
+                                            aria-label="Skill icon"
+                                        />
+                                        <button
+                                            className="absolute inset-y-0 right-0 px-3 flex items-center bg-gray-600 rounded-r-md"
+                                            onClick={() => {
+                                                // You can implement a modal to search/select icons here
+                                                // For now, let's just clear the icon as a toggle
+                                                handleSkillChange(
+                                                    index,
+                                                    "icon",
+                                                    skill.icon ? "" : "Code2"
+                                                );
+                                            }}
+                                            aria-label="Skill icon search"
+                                        >
+                                            <icons.Search className="h-4 w-4 text-gray-300" />
+                                        </button>
+                                    </div>
+                                    {skill.icon && (
+                                        <div className="mt-2 p-2 bg-gray-700 rounded-md max-h-32 overflow-y-auto">
+                                            <div className="grid grid-cols-6 gap-2">
+                                                {Object.keys(icons)
+                                                    .filter((iconName) =>
+                                                        iconName
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                skill.icon?.toLowerCase() ||
+                                                                    ""
+                                                            )
+                                                    )
+                                                    .slice(0, 18) // Limit to first 18 matches
+                                                    .map((iconName) => {
+                                                        const IconComp =
+                                                            icons[
+                                                                iconName as keyof typeof icons
+                                                            ] as FC<{
+                                                                className?: string;
+                                                            }>;
+                                                        return (
+                                                            <div
+                                                                key={iconName}
+                                                                className={`p-2 cursor-pointer rounded hover:bg-gray-600 ${
+                                                                    skill.icon ===
+                                                                    iconName
+                                                                        ? "bg-indigo-600"
+                                                                        : ""
+                                                                }`}
+                                                                onClick={() =>
+                                                                    handleSkillChange(
+                                                                        index,
+                                                                        "icon",
+                                                                        iconName
+                                                                    )
+                                                                }
+                                                                title={iconName}
+                                                            >
+                                                                <IconComp className="w-5 h-5 text-white" />
+                                                            </div>
+                                                        );
+                                                    })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                                        Color
+                                    </label>
+                                    <div className="flex items-center">
+                                        <input
+                                            type="color"
+                                            className="h-9 w-9 rounded mr-2 cursor-pointer border-0"
+                                            value={skill.color || "#1f2937"}
+                                            onChange={(e) =>
+                                                handleSkillChange(
+                                                    index,
+                                                    "color",
+                                                    e.target.value
+                                                )
+                                            }
+                                            aria-label="Skill color"
+                                        />
+                                        <input
+                                            type="text"
+                                            className="block flex-1 px-3 py-2 rounded-md border-gray-700 bg-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            value={skill.color || ""}
+                                            onChange={(e) =>
+                                                handleSkillChange(
+                                                    index,
+                                                    "color",
+                                                    e.target.value
+                                                )
+                                            }
+                                            placeholder="#1f2937"
+                                            aria-label="Skill color hex"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Items
@@ -556,7 +704,7 @@ export default function Dashboard() {
                                         className="flex-1 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900"
                                         aria-label="Save skill"
                                     >
-                                        <Save className="h-4 w-4 mr-1" />
+                                        <icons.Save className="h-4 w-4 mr-1" />
                                         Save
                                     </button>
                                     <button
@@ -568,30 +716,34 @@ export default function Dashboard() {
                                         className="flex-1 inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900"
                                         aria-label="Delete skill"
                                     >
-                                        <Trash2 className="h-4 w-4 mr-1" />
+                                        <icons.Trash2 className="h-4 w-4 mr-1" />
                                         Delete
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))}
-                    
+
                     {/* Add Skill Card */}
-                    <div 
+                    <div
                         className="relative group bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-700 hover:border-indigo-500 transition-all duration-300 flex items-center justify-center min-h-[18rem] cursor-pointer"
                         onClick={() =>
                             insertSkill({
                                 category: "",
                                 items: [],
+                                color: "#1f2937",
+                                icon: "Code2",
                                 // Other fields are optional according to Insert type
                             })
                         }
                     >
                         <div className="text-center p-5">
                             <div className="mb-3 bg-indigo-600 rounded-full p-3 inline-flex">
-                                <Plus className="h-6 w-6 text-white" />
+                                <icons.Plus className="h-6 w-6 text-white" />
                             </div>
-                            <p className="text-gray-300 font-medium">Add New Skill</p>
+                            <p className="text-gray-300 font-medium">
+                                Add New Skill
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -615,9 +767,9 @@ export default function Dashboard() {
                                 setEditingProject(null);
                                 setIsFormOpen(true);
                             }}
-                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 sm:w-auto"
+                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 sm:w-auto"
                         >
-                            <Plus className="h-4 w-4 mr-2 md:h-5 md:w-5 lg:h-6 lg:w-6" />
+                            <icons.Plus className="h-4 w-4 mr-2 md:h-5 md:w-5 lg:h-6 lg:w-6" />
                             Add project
                         </button>
                     </div>
@@ -703,7 +855,7 @@ export default function Dashboard() {
                                                                             className="whitespace-nowrap px-3 py-4 text-sm text-gray-400 sm:px-4 md:px-5"
                                                                             {...provided.dragHandleProps}
                                                                         >
-                                                                            <GripVertical className="h-5 w-5 cursor-grab sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                            <icons.GripVertical className="h-5 w-5 cursor-grab sm:h-6 sm:w-6 md:h-7 md:w-7" />
                                                                         </td>
                                                                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-8">
                                                                             <div className="flex items-center">
@@ -805,7 +957,7 @@ export default function Dashboard() {
                                                                                     className="text-gray-400 hover:text-gray-200"
                                                                                     aria-label="View live site"
                                                                                 >
-                                                                                    <ExternalLink className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.ExternalLink className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
                                                                                 </a>
                                                                                 {project.github_url && (
                                                                                     <a
@@ -817,7 +969,7 @@ export default function Dashboard() {
                                                                                         className="text-gray-400 hover:text-gray-200"
                                                                                         aria-label="View GitHub repository"
                                                                                     >
-                                                                                        <Github className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                        <icons.Github className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
                                                                                     </a>
                                                                                 )}
                                                                             </div>
@@ -833,7 +985,7 @@ export default function Dashboard() {
                                                                                     className="text-indigo-400 hover:text-indigo-300"
                                                                                     aria-label="Edit project"
                                                                                 >
-                                                                                    <Pencil className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.Pencil className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
                                                                                 </button>
                                                                                 <button
                                                                                     onClick={() =>
@@ -844,7 +996,7 @@ export default function Dashboard() {
                                                                                     className="text-red-400 hover:text-red-300"
                                                                                     aria-label="Delete project"
                                                                                 >
-                                                                                    <Trash2 className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                                                                                    <icons.Trash2 className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
                                                                                 </button>
                                                                             </div>
                                                                         </td>
