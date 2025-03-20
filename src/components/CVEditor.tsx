@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { uploadCV, getCVUrl, downloadCV } from "../api/cv";
+import { uploadCV, getCVUrl } from "../api/cv";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
 
