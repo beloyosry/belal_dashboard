@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { uploadCV, getCVUrl } from "../api/cv";
+import { uploadCV, getCVUrl, downloadCV } from "../api/cv";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
 
@@ -39,15 +39,13 @@ const CVUploader: React.FC = () => {
             {cvUrl ? (
                 <div className="flex flex-col items-center">
                     <p className="text-lg font-medium">Current CV:</p>
-                    <a
-                        href={getCVUrl()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download
+                    <button
+                        type="button"
+                        onClick={downloadCV}
                         className="mt-2 px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 transition"
                     >
                         Download CV
-                    </a>
+                    </button>
                 </div>
             ) : (
                 <p className="text-gray-500 dark:text-gray-400">
