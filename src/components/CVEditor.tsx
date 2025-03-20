@@ -28,16 +28,6 @@ const CVUploader: React.FC = () => {
         setIsUploading(false);
     };
 
-    const handleDownload = async () => {
-        await downloadCV()
-            .then(() => {
-                toast.success("CV downloaded successfully!");
-            })
-            .catch(() => {
-                toast.error("Failed to download CV.");
-            });
-    };
-
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         accept: { "application/pdf": [".pdf"] },
@@ -49,13 +39,15 @@ const CVUploader: React.FC = () => {
             {cvUrl ? (
                 <div className="flex flex-col items-center">
                     <p className="text-lg font-medium">Current CV:</p>
-                    <button
-                        type="button"
+                    <a
+                        href={getCVUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
                         className="mt-2 px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 transition"
-                        onClick={handleDownload}
                     >
                         Download CV
-                    </button>
+                    </a>
                 </div>
             ) : (
                 <p className="text-gray-500 dark:text-gray-400">
