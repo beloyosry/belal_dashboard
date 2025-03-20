@@ -15,3 +15,4 @@ export type Enums<T extends keyof Database["public"]["Enums"]> =
 export { type Project } from "./project.types";
 export { type User } from "./user.types";
 export { type Skill } from "./skills.types";
+export { type CV } from "./cv.types";

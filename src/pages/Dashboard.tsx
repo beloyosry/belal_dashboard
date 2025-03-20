@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import * as LucideIcons from "lucide-react";
 import { Project, Skill, User } from "../types";
 import ProjectForm from "../components/ProjectForm";
+import CVEditor from "../components/CVEditor";
 import {
     useDeleteProject,
     useProjectsList,
@@ -493,6 +494,11 @@ export default function Dashboard() {
                         )}
                     </div>
                 </div>
+            </div>
+
+            {/* CV Management Section */}
+            <div className="mt-8 max-w-3xl mx-auto">
+                <CVEditor />
             </div>
 
             {/* Skills Section */}
