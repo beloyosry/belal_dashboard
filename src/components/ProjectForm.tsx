@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { X } from "lucide-react";
-import { Project, InsertTables } from "../types";
-import { useInsertProject, useUpdateProject } from "../api/projects";
-import { useAuth } from "../providers/AuthProvider";
+import { Project } from "../types";
+import { useProjects } from "../lib/projects";
 
 interface ProjectFormProps {
     project?: Project | null;
@@ -16,20 +15,31 @@ export default function ProjectForm({
     onClose,
     onSuccess,
 }: ProjectFormProps) {
-    const { session } = useAuth();
-    const { mutate: insertProject } = useInsertProject();
-    const { mutate: updateProject } = useUpdateProject();
+    const { addProject, updateProject, projects, fetchProjects } =
+        useProjects();
 
-    const [formData, setFormData] = useState<
-        Omit<InsertTables<"projects">, "technologies">
-    >({
+    // Fetch projects when component mounts to determine the minimum order value
+    useEffect(() => {
+        if (!project) {
+            // Only fetch if we're adding a new project
+            fetchProjects();
+        }
+    }, [fetchProjects, project]);
+
+    // Calculate the minimum order value from existing projects
+    const getTopOrder = () => {
+        if (projects.length === 0) return 0;
+        const minOrder = Math.min(...projects.map((p) => p.order));
+        return minOrder - 1; // Set order to be one less than the minimum to place at the top
+    };
+
+    const [formData, setFormData] = useState({
         title: project?.title || "",
         description: project?.description || "",
-        image_url: project?.image_url || "",
-        live_url: project?.live_url || "",
-        github_url: project?.github_url || null,
-        order: project?.order || 0, // Keep this for database consistency
-        user_id: project?.user_id || session?.user?.id || "",
+        photo: project?.photo || "", // Using photo instead of image_url to match Project type
+        url: project?.url || "", // Using url instead of live_url to match Project type
+        repo_url: project?.repo_url || "", // Using repo_url instead of github_url to match Project type
+        order: project ? project.order : getTopOrder(), // Use project order if editing, otherwise set to top
         type: project?.type || "web",
         category: project?.category || "frontend",
         status: project?.status || "completed",
@@ -50,38 +60,29 @@ export default function ProjectForm({
 
         try {
             if (project) {
-                updateProject(
-                    {
-                        id: project.id,
-                        ...formData,
-                        technologies: technologiesArray,
-                    },
-                    {
-                        onSuccess: () => {
-                            toast.success("Project updated successfully");
-                            onSuccess();
-                        },
-                        onError: (error) => {
-                            toast.error("Failed to update project" + error);
-                        },
-                    }
-                );
+                const success = await updateProject(project.id, {
+                    id: project.id,
+                    ...formData,
+                    technologies: technologiesArray,
+                } as Project);
+
+                if (success) {
+                    toast.success("Project updated successfully");
+                    onSuccess();
+                }
             } else {
-                insertProject(
-                    {
-                        ...formData,
-                        technologies: technologiesArray,
-                    },
-                    {
-                        onSuccess: () => {
-                            toast.success("Project created successfully");
-                            onSuccess();
-                        },
-                        onError: (error) => {
-                            toast.error("Failed to create project" + error);
-                        },
-                    }
-                );
+                // Update the order to be at the top before submitting
+                const topOrder = getTopOrder();
+                const success = await addProject({
+                    ...formData,
+                    order: topOrder + 1, // Ensure we're using the latest top order value
+                    technologies: technologiesArray,
+                } as Project);
+
+                if (success) {
+                    toast.success("Project created successfully");
+                    onSuccess();
+                }
             }
         } catch (error) {
             toast.error("Failed to save project" + error);
@@ -243,14 +244,15 @@ export default function ProjectForm({
                                 id="year"
                                 type="number"
                                 value={formData.year}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    const parsedYear = parseInt(e.target.value);
                                     setFormData({
                                         ...formData,
-                                        year:
-                                            parseInt(e.target.value) ||
-                                            new Date().getFullYear(),
-                                    })
-                                }
+                                        year: isNaN(parsedYear)
+                                            ? new Date().getFullYear()
+                                            : parsedYear,
+                                    });
+                                }}
                                 min="2000"
                                 max={new Date().getFullYear() + 1}
                                 className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -261,19 +263,19 @@ export default function ProjectForm({
 
                     <div>
                         <label
-                            htmlFor="image_url"
+                            htmlFor="photo"
                             className="block text-sm font-medium text-gray-200"
                         >
                             Image URL
                         </label>
                         <input
-                            id="image_url"
+                            id="photo"
                             type="url"
-                            value={formData.image_url}
+                            value={formData.photo}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    image_url: e.target.value,
+                                    photo: e.target.value,
                                 })
                             }
                             className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -283,19 +285,19 @@ export default function ProjectForm({
 
                     <div>
                         <label
-                            htmlFor="live_url"
+                            htmlFor="url"
                             className="block text-sm font-medium text-gray-200"
                         >
                             Live URL
                         </label>
                         <input
-                            id="live_url"
+                            id="url"
                             type="url"
-                            value={formData.live_url}
+                            value={formData.url}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    live_url: e.target.value,
+                                    url: e.target.value,
                                 })
                             }
                             className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -305,19 +307,19 @@ export default function ProjectForm({
 
                     <div>
                         <label
-                            htmlFor="github_url"
+                            htmlFor="repo_url"
                             className="block text-sm font-medium text-gray-200"
                         >
                             GitHub URL
                         </label>
                         <input
-                            id="github_url"
+                            id="repo_url"
                             type="url"
-                            value={formData.github_url!}
+                            value={formData.repo_url}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    github_url: e.target.value,
+                                    repo_url: e.target.value,
                                 })
                             }
                             className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"

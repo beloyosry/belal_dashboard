@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useAuth } from "../providers/AuthProvider";
 import { Code2 } from "lucide-react";
+import { useAuth } from "../lib/auth";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { signIn } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await signIn(email, password);
+            await login({ email, password });
             navigate("/");
         } catch (error) {
             toast.error("Failed to sign in" + error);
@@ -33,7 +33,10 @@ export default function Login() {
 
             <div className="mt-6 sm:mt-8 mx-auto w-full max-w-sm sm:max-w-md">
                 <div className="bg-gray-800 py-6 px-4 sm:py-8 sm:px-10 shadow rounded-lg">
-                    <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
+                    <form
+                        className="space-y-5 sm:space-y-6"
+                        onSubmit={handleSubmit}
+                    >
                         <div>
                             <label
                                 htmlFor="email"

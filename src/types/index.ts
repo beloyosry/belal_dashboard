@@ -12,7 +12,7 @@ export type UpdateTables<T extends keyof Database["public"]["Tables"]> =
 export type Enums<T extends keyof Database["public"]["Enums"]> =
     Database["public"]["Enums"][T];
 
-export { type Project } from "./project.types";
-export { type User } from "./user.types";
-export { type Skill } from "./skills.types";
-export { type CV } from "./cv.types";
+export * from "./project.types";
+export * from "./user.types";
+export * from "./skills.types";
+

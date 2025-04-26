@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../providers/AuthProvider";
 import { Code2, LogOut } from "lucide-react";
+import { useAuth } from "../lib/auth";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    const { signOut } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
 
     const handleSignOut = async () => {
-        await signOut();
+        await logout();
         navigate("/login");
     };
 
