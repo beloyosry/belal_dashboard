@@ -13,11 +13,7 @@ const CVEditor: React.FC = () => {
     const [confirmDelete, setConfirmDelete] = useState(false);
 
     useEffect(() => {
-        // Fetch CV on component mount
-        console.log("Fetching CV...");
-        getCV().then((url) => {
-            console.log("CV fetched:", url ? "Success" : "Not found");
-        });
+        getCV();
     }, [getCV]);
 
     const handleDeleteClick = async () => {
@@ -72,7 +68,6 @@ const CVEditor: React.FC = () => {
                 toast.success("Download started");
             })
             .catch((error) => {
-                console.error("Download error:", error);
                 toast.dismiss("cv-download");
                 toast.error("Download failed");
             });
@@ -92,7 +87,6 @@ const CVEditor: React.FC = () => {
                 }
             })
             .catch((error) => {
-                console.error("Upload error:", error);
                 toast.dismiss("cv-upload");
                 toast.error("Failed to upload CV");
             })

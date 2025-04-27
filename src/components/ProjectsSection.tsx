@@ -36,15 +36,11 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
 
     useEffect(() => {
         // Fetch projects on component mount
-        console.log("Fetching projects...");
-        fetchProjects().then((fetchedProjects) => {
-            console.log("Projects fetched:", fetchedProjects);
-        });
+        fetchProjects();
     }, [fetchProjects]);
 
     useEffect(() => {
         // Update local state when projects change
-        console.log("Projects from store:", projects);
         setProjectsForm(projects);
     }, [projects]);
 
@@ -74,9 +70,8 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
                         try {
                             await updateProject(project.id, project);
                         } catch (error) {
-                            console.error(
-                                `Failed to normalize order for project ${project.id}:`,
-                                error
+                            toast.error(
+                                `Failed to update order for project ${project.id}`
                             );
                         }
                     }
@@ -89,7 +84,6 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
         try {
             await deleteProject(id);
         } catch (error) {
-            console.error("Error deleting project:", error);
             toast.error("Failed to delete project");
         }
     };
@@ -115,7 +109,6 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
             try {
                 // Get the project that was moved
                 const draggedProject = projectsForm[source.index];
-                console.log("Dragged project:", draggedProject);
 
                 // Create a new array with the item removed from source and added at destination
                 const newItems = Array.from(projectsForm);
@@ -127,8 +120,6 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
                     ...item,
                     order: index + 1, // Start from 1
                 }));
-
-                console.log("Updated items with new orders:", updatedItems);
 
                 // Update UI immediately (optimistic update)
                 setProjectsForm(updatedItems);
@@ -176,13 +167,11 @@ function ProjectsSection({ setIsFormOpen, setEditingProject }: Props) {
                     // Refresh projects to ensure we have the latest data
                     fetchProjects();
                 } catch (error) {
-                    console.error("Failed to update project orders:", error);
                     toast.dismiss("order-update");
                     toast.error("Failed to update project orders");
                     fetchProjects(); // Revert to original order
                 }
             } catch (error) {
-                console.error("Failed to update project order:", error);
                 toast.error("Failed to update project order");
                 fetchProjects(); // Revert to original order
             }

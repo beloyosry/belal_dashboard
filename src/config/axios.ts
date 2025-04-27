@@ -48,11 +48,11 @@ export const endpoints = {
             return api.post("/api/cv/upload", formData, {
                 headers: {
                     // Override any default content-type to let the browser set it
-                    'Content-Type': undefined
-                }
+                    "Content-Type": undefined,
+                },
             });
         },
-        get: () => api.get("/api/cv", { responseType: 'blob' }),
+        get: () => api.get("/api/cv", { responseType: "blob" }),
         check: () => api.get("/api/cv/status"),
         delete: () => api.delete("/api/cv"),
     },
@@ -73,5 +73,11 @@ export const endpoints = {
         update: (id: number, project: Project) =>
             api.put(`/api/projects/${id}`, project),
         delete: (id: number) => api.delete(`/api/projects/${id}`),
+    },
+
+    //Messages
+    messages: {
+        get: () => api.get("/api/messages"),
+        delete: (id: number) => api.delete(`/api/messages/${id}`),
     },
 };

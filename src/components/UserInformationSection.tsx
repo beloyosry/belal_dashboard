@@ -37,7 +37,6 @@ function UserInformationSection() {
             await updateProfile(userForm);
             setUserFormModified(false);
         } catch (error) {
-            console.error("Error updating profile:", error);
             toast.error("Failed to update profile");
         }
     };

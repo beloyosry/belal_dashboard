@@ -28,7 +28,6 @@ export const useSkills = create<SkillState>()(
 
                 try {
                     const response = await endpoints.skills.get();
-                    console.log("Skills response:", response.data);
 
                     if (response.status === 200 && response.data) {
                         // Handle the nested data structure
@@ -39,14 +38,12 @@ export const useSkills = create<SkillState>()(
                             ? skillsData
                             : [];
 
-                        console.log("Processed skills:", skills);
                         set({ skills, isLoading: false });
                         return skills;
                     } else {
                         throw new Error("Failed to fetch skills");
                     }
                 } catch (error) {
-                    console.error("Skills fetch error:", error);
                     set({
                         error: "Error fetching skills",
                         isLoading: false,
@@ -73,7 +70,6 @@ export const useSkills = create<SkillState>()(
 
                 try {
                     const response = await endpoints.skills.add(skill);
-                    console.log("Add skill response:", response.data);
 
                     if (
                         (response.status === 201 || response.status === 200) &&
@@ -86,8 +82,6 @@ export const useSkills = create<SkillState>()(
                             ? newSkillData[0]
                             : newSkillData;
 
-                        console.log("Processed new skill:", newSkill);
-
                         set((state) => ({
                             skills: [...state.skills, newSkill],
                             isLoading: false,
@@ -98,7 +92,6 @@ export const useSkills = create<SkillState>()(
                         throw new Error("Failed to add skill");
                     }
                 } catch (error) {
-                    console.error("Skill add error:", error);
                     set({
                         error: "Error adding skill",
                         isLoading: false,
@@ -129,7 +122,6 @@ export const useSkills = create<SkillState>()(
                         id,
                         updatedSkill
                     );
-                    console.log("Update skill response:", response.data);
 
                     if (response.status === 200 && response.data) {
                         // Handle the nested data structure
@@ -140,11 +132,6 @@ export const useSkills = create<SkillState>()(
                         )
                             ? updatedSkillData[0]
                             : updatedSkillData;
-
-                        console.log(
-                            "Processed updated skill:",
-                            finalUpdatedSkill
-                        );
 
                         set((state) => ({
                             skills: state.skills.map((skill) =>
@@ -158,7 +145,6 @@ export const useSkills = create<SkillState>()(
                         throw new Error("Failed to update skill");
                     }
                 } catch (error) {
-                    console.error("Skill update error:", error);
                     set({
                         error: "Error updating skill",
                         isLoading: false,
@@ -186,11 +172,6 @@ export const useSkills = create<SkillState>()(
 
                 try {
                     const response = await endpoints.skills.delete(id);
-                    console.log(
-                        "Delete skill response:",
-                        response.status,
-                        response.data
-                    );
 
                     // Accept 200, 204, or any 2xx status code as success
                     if (response.status >= 200 && response.status < 300) {
@@ -208,7 +189,6 @@ export const useSkills = create<SkillState>()(
                         );
                     }
                 } catch (error) {
-                    console.error("Skill deletion error:", error);
                     set({
                         error: "Error deleting skill",
                         isLoading: false,

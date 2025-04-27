@@ -51,10 +51,6 @@ export const useCV = create<CVState>()(
                     const response = await endpoints.cv.upload(formData);
 
                     if (response.status !== 200) {
-                        console.error(
-                            "Upload failed with status:",
-                            response.status
-                        );
                         throw new Error(
                             `Upload failed with status: ${response.status}`
                         );
@@ -92,7 +88,6 @@ export const useCV = create<CVState>()(
                         );
                     }
                 } catch (error) {
-                    console.error("CV upload error:", error);
                     set({
                         error: "Error uploading CV",
                         isUploading: false,
@@ -158,8 +153,6 @@ export const useCV = create<CVState>()(
                         return null;
                     }
                 } catch (error) {
-                    console.error("CV fetch error:", error);
-                    // Don't show error toast for get operations
                     set({ error: "Error fetching CV" });
                     return null;
                 }
@@ -178,7 +171,6 @@ export const useCV = create<CVState>()(
                     const response = await endpoints.cv.check();
                     return response.status === 200 && !!response.data;
                 } catch (error) {
-                    console.error("CV status check error:", error);
                     return false;
                 }
             },
@@ -214,7 +206,6 @@ export const useCV = create<CVState>()(
                         );
                     }
                 } catch (error) {
-                    console.error("CV deletion error:", error);
                     set({ error: "Error deleting CV" });
                     toast.error("Failed to delete CV");
                     return false;

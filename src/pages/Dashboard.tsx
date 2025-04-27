@@ -5,6 +5,7 @@ import SkillsSection from "../components/SkillsSection";
 import UserInformationSection from "../components/UserInformationSection";
 import ProjectForm from "../components/ProjectForm";
 import CVEditor from "../components/CVEditor";
+import ContactUsMessages from "../components/ContactUsMessages";
 
 export default function Dashboard() {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -28,6 +29,9 @@ export default function Dashboard() {
                 setIsFormOpen={setIsFormOpen}
                 setEditingProject={setEditingProject}
             />
+
+            {/* Contact Messages Section */}
+            <ContactUsMessages />
 
             {isFormOpen && (
                 <ProjectForm

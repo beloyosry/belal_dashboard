@@ -28,7 +28,6 @@ export const useProjects = create<ProjectState>()(
 
                 try {
                     const response = await endpoints.projects.get();
-                    console.log("Projects response:", response.data);
 
                     if (response.status === 200 && response.data) {
                         // Handle the nested data structure
@@ -40,14 +39,12 @@ export const useProjects = create<ProjectState>()(
                             ? projectsData
                             : [];
 
-                        console.log("Processed projects:", projects);
                         set({ projects, isLoading: false });
                         return projects;
                     } else {
                         throw new Error("Failed to fetch projects");
                     }
                 } catch (error) {
-                    console.error("Projects fetch error:", error);
                     set({
                         error: "Error fetching projects",
                         isLoading: false,
@@ -74,7 +71,6 @@ export const useProjects = create<ProjectState>()(
 
                 try {
                     const response = await endpoints.projects.add(project);
-                    console.log("Add project response:", response.data);
 
                     if (
                         (response.status === 201 || response.status === 200) &&
@@ -87,8 +83,6 @@ export const useProjects = create<ProjectState>()(
                             ? newProjectData[0]
                             : newProjectData;
 
-                        console.log("Processed new project:", newProject);
-
                         set((state) => ({
                             projects: [...state.projects, newProject],
                             isLoading: false,
@@ -99,7 +93,6 @@ export const useProjects = create<ProjectState>()(
                         throw new Error("Failed to add project");
                     }
                 } catch (error) {
-                    console.error("Project add error:", error);
                     set({
                         error: "Error adding project",
                         isLoading: false,
@@ -130,7 +123,6 @@ export const useProjects = create<ProjectState>()(
                         id,
                         updatedProject
                     );
-                    console.log("Update project response:", response.data);
 
                     if (response.status === 200 && response.data) {
                         // Handle the nested data structure
@@ -141,11 +133,6 @@ export const useProjects = create<ProjectState>()(
                         )
                             ? updatedProjectData[0]
                             : updatedProjectData;
-
-                        console.log(
-                            "Processed updated project:",
-                            finalUpdatedProject
-                        );
 
                         set((state) => ({
                             projects: state.projects.map((project) =>
@@ -161,7 +148,6 @@ export const useProjects = create<ProjectState>()(
                         throw new Error("Failed to update project");
                     }
                 } catch (error) {
-                    console.error("Project update error:", error);
                     set({
                         error: "Error updating project",
                         isLoading: false,
@@ -189,11 +175,6 @@ export const useProjects = create<ProjectState>()(
 
                 try {
                     const response = await endpoints.projects.delete(id);
-                    console.log(
-                        "Delete project response:",
-                        response.status,
-                        response.data
-                    );
 
                     // Accept 200, 204, or any 2xx status code as success
                     if (response.status >= 200 && response.status < 300) {
@@ -211,7 +192,6 @@ export const useProjects = create<ProjectState>()(
                         );
                     }
                 } catch (error) {
-                    console.error("Project deletion error:", error);
                     set({
                         error: "Error deleting project",
                         isLoading: false,

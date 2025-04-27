@@ -46,7 +46,6 @@ export const useAuth = create<AuthState>()(
                     toast.success(`Welcome back, ${user.name}!`);
                 } catch (error) {
                     toast.error("Login failed");
-                    console.error(error);
                 } finally {
                     set({ isLoading: false });
                 }
@@ -66,7 +65,6 @@ export const useAuth = create<AuthState>()(
                         toast.success("You have been logged out");
                     }
                 } catch (error) {
-                    console.error("Logout error:", error);
                     // Even if the API call fails, we should still clear local state
                     localStorage.removeItem(TOKEN_KEY);
                     set({
@@ -93,7 +91,6 @@ export const useAuth = create<AuthState>()(
                     setToken(token);
 
                     const response = await endpoints.auth.profile();
-                    console.log("Profile response:", response.data);
 
                     if (response.status === 200 && response.data) {
                         // Handle both possible response structures:
@@ -108,8 +105,6 @@ export const useAuth = create<AuthState>()(
                             ...(userData.data ? userData.data : {}),
                         };
 
-                        console.log("Normalized user:", normalizedUser);
-
                         set({
                             user: normalizedUser,
                             isAuthenticated: true,
@@ -121,7 +116,6 @@ export const useAuth = create<AuthState>()(
                         return null;
                     }
                 } catch (error) {
-                    console.error("Profile fetch error:", error);
                     set({
                         profileError: "Error fetching profile",
                         isAuthenticated: false,
@@ -147,29 +141,28 @@ export const useAuth = create<AuthState>()(
                     setToken(token);
 
                     const response = await endpoints.auth.updateProfile(user);
-                    
+
                     if (response.status === 200 && response.data) {
                         // Handle both possible response structures
                         const userData = response.data.user || response.data;
-                        
+
                         // Create a normalized user object
                         const normalizedUser = {
                             ...userData,
                             ...(userData.data ? userData.data : {}),
                         };
-                        
+
                         set({
                             user: normalizedUser,
                             isAuthenticated: true,
                             profileError: null,
                         });
-                        
+
                         toast.success("Profile updated successfully");
                     } else {
                         set({ profileError: "Failed to update profile" });
                     }
                 } catch (error) {
-                    console.error("Profile update error:", error);
                     set({
                         profileError: "Error updating profile",
                         isAuthenticated: false,

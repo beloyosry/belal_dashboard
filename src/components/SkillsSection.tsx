@@ -27,15 +27,11 @@ function SkillsSection() {
 
     useEffect(() => {
         // Fetch skills on component mount
-        console.log("Fetching skills...");
-        fetchSkills().then((fetchedSkills) => {
-            console.log("Skills fetched:", fetchedSkills);
-        });
+        fetchSkills();
     }, [fetchSkills]);
 
     useEffect(() => {
         // Update local state when skills change
-        console.log("Skills from store:", skills);
         setSkillsForm(skills);
     }, [skills]);
 
@@ -83,7 +79,6 @@ function SkillsSection() {
                 setEditMode(false);
             }
         } catch (error) {
-            console.error("Error adding skill:", error);
             toast.error("Failed to add skill");
         }
     };
@@ -96,7 +91,6 @@ function SkillsSection() {
         try {
             await updateSkill(skillToUpdate.id, skillToUpdate);
         } catch (error) {
-            console.error("Error updating skill:", error);
             toast.error("Failed to update skill");
         }
     };
@@ -105,13 +99,9 @@ function SkillsSection() {
         try {
             await deleteSkill(id);
         } catch (error) {
-            console.error("Error deleting skill:", error);
             toast.error("Failed to delete skill");
         }
     };
-
-    // Debug output
-    console.log("Rendering SkillsSection with skills:", skillsForm);
 
     return (
         <div className="mt-8">

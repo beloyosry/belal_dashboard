@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => {
         ? "http://localhost:3000"
         : "https://myportfoliobackend-production-9f43.up.railway.app/";
 
-    console.log(`API target: ${apiTarget} (useLocalApi: ${useLocalApi})`);
     return {
         plugins: [react()],
         server: {
