@@ -69,7 +69,7 @@ const CVEditor: React.FC = () => {
             })
             .catch((error) => {
                 toast.dismiss("cv-download");
-                toast.error("Download failed");
+                toast.error("Download failed",error);
             });
     };
 
@@ -88,7 +88,7 @@ const CVEditor: React.FC = () => {
             })
             .catch((error) => {
                 toast.dismiss("cv-upload");
-                toast.error("Failed to upload CV");
+                toast.error("Failed to upload CV",error);
             })
             .finally(() => {
                 getCV();
